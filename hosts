@@ -1,0 +1,5 @@
+[webservers]
+node1 ansible_host=192.168.18.41 ansible_port=22 ansible_user=root 
+[webservers2]
+node2 ansible_host=192.168.18.43 ansible_port=22 ansible_user=root 
+node3 ansible_host=192.168.18.42 ansible_port=22 ansible_user=root 

@@ -1,0 +1,5 @@
+- name: print out operating system
+  hosts: webservers
+  gather_facts: True
+  tasks:
+    - debug: var=inventory_hostname
