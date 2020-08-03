@@ -1,0 +1,54 @@
+---
+- name: Deploy mezzanine
+  hosts: test
+  vars:
+    user: "{{ ansible_user }}"
+    proj_app: mezzanine_example
+    proj_name: "{{ proj_app }}"
+    venv_home: "/opt/myvenv"
+    venv_path: "{{ venv_home }}/{{ proj_name }}"
+    proj_path: "{{ venv_home }}/{{proj_name}}"
+    reqs_path: requirements.txt
+  
+  tasks:
+    - name: Create virtual home directory
+      command: python3 -m venv {{venv_home}}
+
+    - name: pull project code from githup
+      git: repo=https://github.com/lagougou/djangoweb-blog.git  dest={{ venv_path }}
+    
+    - name: install mysql-devel 
+      yum:
+        name: mysql-devel
+        state: latest
+
+    - name: install mariadb server 
+      yum: name=mariadb-server state=present
+
+    - name: install mariadb client
+      yum: name=mariadb state=present
+
+    - name: start mariadb service
+      service: name=mariadb state=started
+    
+    - name: install mysql require-development 
+      pip: name=PyMySQL
+      vars:
+        ansible_python_interpreter: /usr/local/bin/python3 
+
+    - name: create a blog database
+      mysql_db: 
+        login_host: "localhost"
+        login_user: "root"
+        login_password: ""
+        login_port: "3306"
+        name: "blog"
+        encoding: "utf8"
+        state: present
+      vars:
+        ansible_python_interpreter: /usr/local/bin/python3
+
+    - name: install requirements.txt
+      pip: requirements={{ proj_path }}/{{ reqs_path }} virtualenv={{ venv_home }}
+      vars:
+        ansible_python_interpreter: /usr/local/bin/python3
