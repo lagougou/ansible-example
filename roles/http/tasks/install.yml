@@ -1,0 +1,3 @@
+- name: isntall httpd server
+  yum: name=httpd state=present
+

@@ -1,0 +1,5 @@
+- hosts: data_store
+  remote_user: root
+
+  roles:
+    - http

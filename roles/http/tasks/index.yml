@@ -1,0 +1,2 @@
+- name: config index.html
+  copy: src=index.html dest=/var/www/html/

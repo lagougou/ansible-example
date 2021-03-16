@@ -1,0 +1,24 @@
+---
+- hosts: data_store
+  remote_user: root
+  vars_files:
+    - vars.yaml
+
+  tasks: 
+    - name: hello
+      command: "hostname"
+      #debug: true
+    - name: print hostname
+      shell: "echo {{ package }}"
+      when:  ansible_hostname  | regex_search("^os(.*)$")
+      #debug: true
+
+#- name: Include specific variables.
+#  include_vars: "{{ ansible_os_family }}.yaml"
+#
+#- name: define nginx user
+#  sef_fact:
+#    nginx_user: "{{ __nginx_user }}"
+#  when: nginx_user is not defined
+
+
